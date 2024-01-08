@@ -86,3 +86,31 @@ pipeline {
         }
     }
 }
+
+#[2]--Install Prometheus on EKS
+$ helm repo add stable https://charts.helm.sh/stable          ///We need to add the Helm Stable Charts for our local client
+
+$ helm repo add prometheus-community https://prometheus-community.github.io/helm-charts     ///Add Prometheus Helm repo
+
+$ kubectl create namespace prometheus            ///Create Prometheus namespace
+
+$ helm install stable prometheus-community/kube-prometheus-stack -n prometheus      ///Install Prometheus
+
+$ kubectl get pods -n prometheus          ///To check whether Prometheus is installed
+
+$ kubectl get svc -n prometheus           ///to check the services file (svc) of the Prometheus
+
+##let’s expose Prometheus to the external world using LoadBalancer
+$ kubectl edit svc stable-kube-prometheus-sta-prometheus -n prometheus    ///type:LoadBalancer, change port & targetport to 9090, save and close
+
+$ kubectl get svc -n prometheus    //copy dns name of LB and browse with 9090
+
+#=============================================================================================================================================================================================
+#[3] Cleanup
+$ kubectl delete --all pods -n prometheus                   //This command will delete all the pods in prometheus namespace
+$ kubectl delete namespace prometheus
+$ kubectl get all                                           //This command will show the all the deployments, pods & services in default namespace
+$ kubectl delete deployment.apps/hotstar-clone     //delete deployment in your k8s cluster
+$ kubectl delete service/hotstar-clone             //delete service for your deployment of k8s cluster
+$ eksctl delete cluster rootmeet-cluster --region us-west-1     OR    eksctl delete cluster --region=us-west-1 --name=rootmeet-cluster      //This command will delete your EKS cluster
+$ terraform destroy

@@ -12,8 +12,9 @@ spec:
       labels:
         app: hotstar
     spec:
+      terminationGracePeriodSeconds: 30
       containers:
       - name: hotstar
-        image: mudit097/hotstar:latest
+        image: sanjeevrisbud/hotstar-clone:latest
         ports:
         - containerPort: 3000  # Port your application listens on

@@ -5,6 +5,8 @@ metadata:
 spec:
   selector:
     app: hotstar
+  externalIPs:
+    - 192.168.68.87
   ports:
     - protocol: TCP
       port: 80  # Port exposed by the service externally (outside the cluster)
